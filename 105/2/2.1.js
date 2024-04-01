@@ -2,25 +2,22 @@ let n = document.getElementById("num");
 let re = document.getElementById("result");
 
 function computeData() {
-    let num = parseFloat(n.value);
-    let sum = 0;
+        let num = parseFloat(n.value);
+        let sum = computeSum(num);
+        re.innerHTML = "ans = " + sum;
+    }
 
-    if (num >= 1) {
-        for (let i = 0; i <= num; i++) {
-            sum += i;
+function computeSum(num) {
+        if (num >= 1) {
+                return num + computeSum(num - 1);
+        } else if (num == 0) {
+                return 0;
+        } else {
+                return "Please Enter a Number that is 0 or Greater";
         }
     }
-    else if(num == 0){
-        sum = 0
-    }
-    else {
-        ans = "Please Enter Number that More than 0"
-    }
-
-    re.innerHTML = "ans = " + sum;
-}
 
 function resetData() {
-    n.value = "";
-    re.innerHTML = "";
-}
+        n.value = "";
+        re.innerHTML = "";
+    }

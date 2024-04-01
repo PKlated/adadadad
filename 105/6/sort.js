@@ -56,43 +56,29 @@ class Sort{
 }
 
 // main
-let i = document.getElementById('Input');
-let r = document.getElementById("result");
-let data = [];
-let mySort = new Sort(); 
 
-function pushData() {
-    let input = i.value;
-    if (input == "") {
-        r.innerHTML = "Please Input Again";
-    } else {
-        data.push(input);
-        displayData();
-        i.value = "";
-    }
+let data =[];
+
+let mySort = new Sort();
+
+for(let i =0;i<10;i++){
+    data.push(Math.floor(Math.random()*100));
 }
 
-function displayData() {
-    r.innerHTML = "Data = " + mySort.display(data);
-}
+console.log("Before BB : ",mySort.display(data));
+console.time();
+mySort.bubbleSort(mySort);
+console.timeEnd();
+console.log("After BB : ",mySort.display(data));
 
-function bubbleSort() {
-    console.time();
-    mySort.bubbleSort(data);
-    console.timeEnd();
-    displayData();
-}
+console.log("Before IS : ",mySort.display(data));
+console.time();
+mySort.insertionSort(mySort);
+console.timeEnd();
+console.log("After IS : ",mySort.display(data));
 
-function insertionSort() {
-    
-    mySort.insertionSort(data);
-    console.timeEnd();
-    displayData();
-}
-
-function shellSort() {
-    console.time();
-    mySort.shellSort(data);
-    console.timeEnd();
-    displayData();
-}
+console.log("Before SS: ",mySort.display(data));
+console.time();
+mySort.shellSort(mySort);
+console.timeEnd();
+console.log("After SS : ",mySort.display(data));

@@ -2,7 +2,7 @@ class Stack{
     constructor(){
         this.mylist = [];
     }
-    isEmty(){
+    isEmpty(){
         return this.mylist.length==0
         // if(this.mylist.length==0){
         //     return true;
@@ -15,7 +15,7 @@ class Stack{
         this.mylist.push(value);
     }
     pop(){
-        if(this.isEmty()){
+        if(this.isEmpty()){
             return "";
         }
         else{
@@ -42,62 +42,46 @@ function displayResult(){
 }
 // let result = infixToPostfix("((a+b)*c/d+e^f)/g")
 // console.log("result = ",result)
-function infixToPostfix(str){
+function infixToPostfix(str) {
     let ch;
-    let output =""
+    let output = "";
     let mystack = new Stack();
-    for(let i =0;i<str.length;i++){
+    for (let i = 0; i < str.length; i++) {
         ch = str.charAt(i);
-        // console.log(ch);
-        if(ch =="("){
+        if (ch == "(") {
             mystack.push(ch);
-            mystack.stackDisplay();
-        }
-        else if(checkOperator(ch)){
-            while(!mystack.isEmty()&&checkPriority(ch)<=checkPriority(mystack.peek())){
-                output = output+mystack.pop();
+        } else if (checkOperator(ch)) {
+            while (!mystack.isEmpty() && checkPriority(ch) <= checkPriority(mystack.peek())) {
+                output = output + mystack.pop();
             }
             mystack.push(ch);
-            mystack.stackDisplay();
-        }
-        else if(ch==")"){
-            while(!mystack.isEmty()&&mystack.peek()!="("){
-                output = output+mystack.pop();
+        } else if (ch == ")") {
+            while (!mystack.isEmpty() && mystack.peek() != "(") {
+                output = output + mystack.pop();
             }
             mystack.pop();
-            mystack.stackDisplay();
-        }
-        else{
-            output = output+ch;
-            console.log("output = ",output);
+        } else {
+            output = output + ch;
         }
     }
-    while(!mystack.isEmty()){
-        output = output+mystack.pop();
+    while (!mystack.isEmpty()) {
+        output = output + mystack.pop();
     }
     return output;
 }
 
-function checkOperator(c){
-    if(c=="+"||c=="-"||c=="*"||c=="/"||c=="^"){
-        return true;
-    }
-    else{
-        return false;
-    }
+function checkOperator(c) {
+    return c == "+" || c == "-" || c == "*" || c == "/" || c == "^" || c == "**";
 }
 
-function checkPriority(c){
-    if(c=="+"||c=="-"){
-        return 1;
-    }
-    else if(c=="*"|c=="/"){
+function checkPriority(c) {
+    if (c == "**") {
+        return 3; // Exponentiation has the highest priority
+    } else if (c == "*" || c == "/") {
         return 2;
-    }
-    else if(c=="^"){
-        return 3;
-    }
-    else{
+    } else if (c == "+" || c == "-") {
+        return 1;
+    } else {
         return 0;
     }
 }
@@ -114,10 +98,12 @@ function evaluatePostfix(postfix) {
             let operand2 = stack.pop();
             let operand1 = stack.pop();
             let res;
-            
-            if (operand2 === 0 && ch === '/') {
+
+            if (ch == '**') {
+                res = Math.pow(operand1, operand2);
+            } else if (operand2 === 0 && ch === '/') {
                 res = "Please input again"; // Handle division by zero
-            } else {    
+            } else {
                 res = applyOperator(operand1, operand2, ch);
             }
 
@@ -134,10 +120,8 @@ function evaluatePostfix(postfix) {
     return stack.pop();
 }
 
-
-
 function isOperator(ch) {
-    return ch === '+' || ch === '-' || ch === '*' || ch === '/';
+    return ch === '+' || ch === '-' || ch === '*' || ch === '/' || ch === '**'; // Include '**' as an operator
 }
 
 function applyOperator(operand1, operand2, operator) {
@@ -153,10 +137,13 @@ function applyOperator(operand1, operand2, operator) {
         } else {
             return "Please input again"; // Return the error message as a string
         }
+    } else if (operator === '**') { // Handle exponentiation
+        return Math.pow(operand1, operand2);
     } else {
         throw new Error("Invalid operator: " + operator); // Throw an Error object for invalid operators
     }
 }
+
 
 // let mystack = new Stack();
 // console.log(mystack);
