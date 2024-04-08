@@ -1,84 +1,96 @@
-class Sort{
-    bubbleSort(arr){
+class Sort {
+    bubbleSort(arr) {
         let temp;
         let size = arr.length;
-        for(let i = 0;i<size-1;i++){
-            for(let j=0;j<(size-i)-1;j++){
-                if(arr[j]>arr[j+1]){
-                    temp =arr[j];
-
-                    arr[j]=arr[j+1];
-                    arr[j+1]=temp;
+        for (let i = 0; i < size - 1; i++) {
+            for (let j = 0; j < (size - i) - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
                 }
             }
         }
     }
 
-    insertionSort(arr){
-        let key,j;
-        for(let i=1;i<arr.length;i++){
-            key =arr[i];
-            j=i-1;
-            while(j>=0&&key<arr[j]){
-                arr[j+1]=arr[j];
-                j=j-1;
+    insertionSort(arr) {
+        let key, j;
+        for (let i = 1; i < arr.length; i++) {
+            key = arr[i];
+            j = i - 1;
+            while (j >= 0 && key < arr[j]) {
+                arr[j + 1] = arr[j];
+                j = j - 1;
             }
-            arr[j+1]=key;
+            arr[j + 1] = key;
         }
     }
 
-    shellSort(arr){
-        let gap = arr.length/2;
-        let temp,j;
+    shellSort(arr) {
+        let gap = arr.length / 2;
+        let temp, j;
 
-        while(gap>0){
-            for(let i = gap;i<arr.length;i++){
-                temp = arr[i]
-                j= i ;
-                while(j>=gap&&arr[j-gap]>temp){
-                    arr[j]=arr[j-gap];
-                    j=j-gap;
+        while (gap > 0) {
+            for (let i = gap; i < arr.length; i++) {
+                temp = arr[i];
+                j = i;
+                while (j >= gap && arr[j - gap] > temp) {
+                    arr[j] = arr[j - gap];
+                    j = j - gap;
                 }
-                arr[j]=temp;
+                arr[j] = temp;
             }
-            gap = Math.floor(gap/2);
+            gap = Math.floor(gap / 2);
         }
     }
 
-    display(arr){
+    display(arr) {
         let str = "";
-        for(let i=0;i<arr.length;i++){
-            str = str+arr[i]+"";
+        for (let i = 0; i < arr.length; i++) {
+            str = str + arr[i] + " ";
         }
         return str;
     }
-    
+
+    copyArray(arr) {
+        let copy = [];
+        for (let i = 0; i < arr.length; i++) {
+            copy.push(arr[i]);
+        }
+        return copy;
+    }
 }
 
-// main
-
-let data =[];
-
+// Main
+let data = [];
 let mySort = new Sort();
 
-for(let i =0;i<10;i++){
-    data.push(Math.floor(Math.random()*100));
+for (let i = 0; i < 10; i++) {
+    data.push(Math.floor(Math.random() * 100));
 }
 
-console.log("Before BB : ",mySort.display(data));
-console.time();
-mySort.bubbleSort(mySort);
-console.timeEnd();
-console.log("After BB : ",mySort.display(data));
+console.log("Original Array: ", mySort.display(data));
 
-console.log("Before IS : ",mySort.display(data));
-console.time();
-mySort.insertionSort(mySort);
-console.timeEnd();
-console.log("After IS : ",mySort.display(data));
+// Bubble Sort
+let bubbleSortData = mySort.copyArray(data);
+console.log("Before Bubble Sort: ", mySort.display(bubbleSortData));
+console.time("Bubble Sort");
+mySort.bubbleSort(bubbleSortData);
+console.timeEnd("Bubble Sort");
+console.log("After Bubble Sort: ", mySort.display(bubbleSortData));
 
-console.log("Before SS: ",mySort.display(data));
-console.time();
-mySort.shellSort(mySort);
-console.timeEnd();
-console.log("After SS : ",mySort.display(data));
+// Insertion Sort
+let insertionSortData = mySort.copyArray(data);
+console.log("Before Insertion Sort: ", mySort.display(insertionSortData));
+console.time("Insertion Sort");
+mySort.insertionSort(insertionSortData);
+console.timeEnd("Insertion Sort");
+console.log("After Insertion Sort: ", mySort.display(insertionSortData));
+
+// Shell Sort
+let shellSortData = mySort.copyArray(data);
+console.log("Before Shell Sort: ", mySort.display(shellSortData));
+console.time("Shell Sort");
+mySort.shellSort(shellSortData);
+console.timeEnd("Shell Sort");
+console.log("After Shell Sort: ", mySort.display(shellSortData));

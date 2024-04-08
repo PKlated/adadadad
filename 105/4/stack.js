@@ -1,47 +1,51 @@
-class Stack{
-    constructor(){
+class Stack {
+    constructor() {
         this.mylist = [];
     }
-    isEmpty(){
-        return this.mylist.length==0
-        // if(this.mylist.length==0){
-        //     return true;
-        // }
-        // else{
-        //     return false;
-        // }
+
+    isEmpty() {
+        return this.mylist.length == 0;
     }
-    push(value){
+
+    push(value) {
         this.mylist.push(value);
     }
-    pop(){
-        if(this.isEmpty()){
+
+    pop() {
+        if (this.isEmpty()) {
             return "";
-        }
-        else{
+        } else {
             return this.mylist.pop();
         }
     }
-    peek(){
-        return this.mylist[this.mylist.length-1];
+
+    peek() {
+        return this.mylist[this.mylist.length - 1];
     }
-    stackDisplay(){
-        for(let i = this.mylist.length-1;i>=0;i--){
+
+    stackDisplay() {
+        for (let i = this.mylist.length - 1; i >= 0; i--) {
             console.log(this.mylist[i]);
         }
     }
 }
 
-// main
-let e = document.getElementById("exe")
-let r = document.getElementById("result")
-function displayResult(){
+// Main
+let e = document.getElementById("exe");
+let r = document.getElementById("result");
+
+function displayResult() {
     let result = infixToPostfix(e.value);
     let ans = evaluatePostfix(result);
-    r.innerHTML = "Postfix = " +result + "</br>"+ " Answer = " + ans;
+    r.innerHTML = "Postfix = " + result + "</br>" + " Answer = " + ans;
 }
-// let result = infixToPostfix("((a+b)*c/d+e^f)/g")
-// console.log("result = ",result)
+
+// Modify the checkOperator function to include '**' as a single operator
+function checkOperator(c) {
+    return c == "+" || c == "-" || c == "*" || c == "/" || c == "^" || c == "**";
+}
+
+// Modify the infixToPostfix function to handle '**' as a single operator
 function infixToPostfix(str) {
     let ch;
     let output = "";
@@ -70,22 +74,20 @@ function infixToPostfix(str) {
     return output;
 }
 
-function checkOperator(c) {
-    return c == "+" || c == "-" || c == "*" || c == "/" || c == "^" || c == "**";
-}
-
+// Define the checkPriority function to determine operator precedence
 function checkPriority(c) {
-    if (c == "**") {
-        return 3; // Exponentiation has the highest priority
+    if (c == "+" || c == "-") {
+        return 1;
     } else if (c == "*" || c == "/") {
         return 2;
-    } else if (c == "+" || c == "-") {
-        return 1;
+    } else if (c == "^" || c == "**") {
+        return 3;
     } else {
         return 0;
     }
 }
 
+// Modify the evaluatePostfix function to correctly handle '**' as an operator
 function evaluatePostfix(postfix) {
     const stack = new Stack();
 
@@ -101,8 +103,6 @@ function evaluatePostfix(postfix) {
 
             if (ch == '**') {
                 res = Math.pow(operand1, operand2);
-            } else if (operand2 === 0 && ch === '/') {
-                res = "Please input again"; // Handle division by zero
             } else {
                 res = applyOperator(operand1, operand2, ch);
             }
@@ -120,10 +120,12 @@ function evaluatePostfix(postfix) {
     return stack.pop();
 }
 
+// Include '**' as an operator in the isOperator function
 function isOperator(ch) {
-    return ch === '+' || ch === '-' || ch === '*' || ch === '/' || ch === '**'; // Include '**' as an operator
+    return ch === '+' || ch === '-' || ch === '*' || ch === '/' || ch === '^' || ch === '**'; // Include '**' as an operator
 }
 
+// Modify the applyOperator function to handle '**' as an operator
 function applyOperator(operand1, operand2, operator) {
     if (operator === '+') {
         return operand1 + operand2;
@@ -143,7 +145,6 @@ function applyOperator(operand1, operand2, operator) {
         throw new Error("Invalid operator: " + operator); // Throw an Error object for invalid operators
     }
 }
-
 
 // let mystack = new Stack();
 // console.log(mystack);
