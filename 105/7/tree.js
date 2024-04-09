@@ -1,4 +1,4 @@
-class nodeData {
+class NodeData {
     constructor(elem) {
         this.element = elem;
         this.nextleft = null;
@@ -6,14 +6,14 @@ class nodeData {
     }
 }
 
-class binarySearchTree {
+class BinarySearchTree {
     constructor() {
         this.root = null;
     }
 
     addRecursive(current, elem) {
         if (current == null) {
-            return new nodeData(elem);
+            return new NodeData(elem);
         }
         if (elem < current.element) {
             current.nextleft = this.addRecursive(current.nextleft, elem);
@@ -23,8 +23,11 @@ class binarySearchTree {
         return current;
     }
 
-    add(elem) {
-        this.root = this.addRecursive(this.root, elem);
+    addFromInput(inputValue) {
+        const digits = inputValue.split("").map(Number);
+        for (const digit of digits) {
+            this.root = this.addRecursive(this.root, digit);
+        }
     }
 
     inOrder(n, str) {
@@ -52,20 +55,21 @@ class binarySearchTree {
         }
         return str;
     }
+
     clear() {
         this.root = null;
     }
 }
 
 // Create an instance of the BST
-let bst = new binarySearchTree();
+let bst = new BinarySearchTree();
 
-// Function to add elements to the BST
+// Function to add elements to the BST from input
 function addElement() {
     const i = document.getElementById("input");
-    const value = parseInt(i.value);
-    if (!isNaN(value)) {
-        bst.add(value);
+    const values = i.value.trim();
+    if (values) {
+        bst.addFromInput(values);
         i.value = ''; // Clear the input field
     }
 }
@@ -75,6 +79,8 @@ function inOrder() {
     const result = bst.inOrder(bst.root, "");
     const r = document.getElementById("result");
     r.innerHTML = "In-Order: " + result;
+    console.log(bst);
+
 }
 
 // Function to perform pre-order traversal and display the result
@@ -82,6 +88,8 @@ function preOrder() {
     const result = bst.preOrder(bst.root, "");
     const r = document.getElementById("result");
     r.innerHTML = "Pre-Order: " + result;
+    console.log(bst);
+
 }
 
 // Function to perform post-order traversal and display the result
@@ -98,10 +106,14 @@ function postOrder() {
     console.log = originalConsoleLog;
 
     output.innerHTML = "Post-Order: " + result.trim();
+    console.log(bst);
+
 }
 
 function clearTree() {
     bst.clear();
     const output = document.getElementById("result");
     output.innerHTML = "Tree cleared!";
+    console.log(bst);
+
 }
